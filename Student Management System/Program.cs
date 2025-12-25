@@ -1,47 +1,55 @@
 ﻿
-using System.Transactions;
-
 namespace Student_Management_System
 {
-    class Student(int id, string name, int age, List<Course> courses )
+    class Student(int id, string name, int age)
     {
-        int studentId = id;
-        string name = name;
-        int age = age;
-        List<Course> courses=courses;
+        public int studentId = id;
+        public string name = name;
+        public int age = age;
+        List<Course> courses = [];
         public bool Enroll(Course course)
         {
             foreach (var i in courses)
-                if (i.CourseId == course.CourseId)
+                if (i.courseId == course.courseId)
                     return false;
 
             courses.Add(course);
             return true;
 
         }
-        string PrintDetails();
-    }
-    class Instructor
-    {
-        public int InstructorId;
-        public string Name;
-        public string Specialization;
-
-        public Instructor(int instructorId, string name, string specialization)
+        public string PrintDetails()
         {
-            InstructorId = instructorId;
-            Name = name;
-            Specialization = specialization;
-        }
+            String result = $"Id: {studentId}, Name: {name}, Age: {age} Courses";
+            foreach (var i in courses)
+            {
+                result += i.Title;
+            }
+            return result;
 
-        string PrintDetails();
+        }
+    }
+    public class Instructor(int instructorId, string name, string specialization)
+    {
+        public int instructorId = instructorId;
+        public string name = name;
+        public string specialization = specialization;
+
+        public string PrintDetails()
+        {
+            string result = $"Id: {instructorId}, Name: {name}, Specialization: {specialization}";
+            return result;
+        }
     }
     public class Course(int id, string title, Instructor instructor)
     {
-        public int CourseId = id;
+        public int courseId = id;
         public string Title = title;
-        public Instructor Instructor = instructor;
-        string PrintDetails();
+        Instructor instructor = instructor;
+        public string PrintDetails()
+        {
+            string result = $"Id: {courseId}, Title: {title}, Instructor: {instructor.name}";
+            return result;
+        }
 
     }
 
@@ -66,19 +74,49 @@ namespace Student_Management_System
             instructors.Add(instructor);
             return true;
         }
-        Student FindStudent(int studentId);
-        Course FindCourse(int courseId);
+        public Student FindStudent(int studentId)
+        {
+            foreach (var i in students)
+            {
+                if (i.studentId == studentId)
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
+        public Course FindCourse(int courseId)
+        {
+            foreach (var i in courses)
+            {
+                if (i.courseId == courseId)
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
         public Instructor FindInstructor(int instructorId)
         {
             foreach (var i in instructors)
             {
-                if (i.InstructorId == instructorId) return i;
+                if (i.instructorId == instructorId) return i;
 
             }
             return null;
 
         }
-        bool EnrollStudentInCourse(int studentId, int courseId);
+        public bool EnrollStudentInCourse(int studentId, int courseId)
+        {
+            Student student = FindStudent(studentId);
+            Course course = FindCourse(courseId);
+            if (studentId == null)
+            {
+                return false;
+            }
+            return student.Enroll(course);
+
+        }
 
     }
 
@@ -153,9 +191,47 @@ namespace Student_Management_System
                             Console.WriteLine("Course added successfully");
                         }
                         break;
-                    case 4: {
+                    case 4:
+                        {
+                            Console.Write("Enter Student Id: ");
+                            int studentId = Convert.ToInt32(Console.ReadLine());
 
-                        } break; 
+                            Console.Write("Enter Course Id: ");
+                            int courseId = Convert.ToInt32(Console.ReadLine());
+
+                            if (manager.EnrollStudentInCourse(studentId, courseId))
+                            {
+                                Console.WriteLine("Student enrolled successfully");
+
+                            }
+                            else Console.WriteLine("Student not found");
+
+                        }
+                        break;
+                    case 5:
+                        {
+                            foreach(var s in manager.students)
+                            {
+                                Console.WriteLine(s.PrintDetails());
+                            }
+                        }
+                        break;
+                    case 6:
+                        {
+                            foreach(var c in manager.courses)
+                            {
+                                Console.WriteLine(c.PrintDetails());
+                            }
+                        }
+                        break;
+                    case 7:
+                        {
+                            foreach(var i in manager.instructors)
+                            {
+                                Console.WriteLine(i.PrintDetails());
+                            }
+                        }
+                        break;
                 }
             }
             while (true);
