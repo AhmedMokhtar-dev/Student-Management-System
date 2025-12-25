@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.Design;
+
 namespace Student_Management_System
 {
     class Student(int id, string name, int age)
@@ -125,6 +127,7 @@ namespace Student_Management_System
     {
         static void Main(string[] args)
         {
+            bool flag = true;
             StudentManager manager = new StudentManager();
             do
             {
@@ -232,9 +235,43 @@ namespace Student_Management_System
                             }
                         }
                         break;
+                    case 8: {
+                            Console.Write("Enter Student Id: ");
+                            int input= Convert.ToInt32(Console.ReadLine());
+                            Student student = manager.FindStudent(input);
+                            if (student != null)
+                            {
+                                Console.WriteLine(student.PrintDetails());
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Student Not Found");
+                            }
+                        }
+                        break;
+                    case 9: {
+                            Console.Write("Enter Course Id: ");
+                            int input= Convert.ToInt32(Console.ReadLine());
+                            Course course = manager.FindCourse(input);
+                            if (course != null)
+                            {
+                                Console.WriteLine(course.PrintDetails());
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Student Not Found");
+                            }
+                        }
+                        break;
+                    case 10:
+                        {
+                            flag = false;
+                        }break;
                 }
             }
-            while (true);
+            while (flag);
         }
     }
 }
