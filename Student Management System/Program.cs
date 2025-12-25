@@ -55,9 +55,9 @@ namespace Student_Management_System
 
     class StudentManager
     {
-        public List<Student> students;
-        public List<Course> courses;
-        public List<Instructor> instructors;
+        public List<Student> students=new();
+        public List<Course> courses=new();
+        public List<Instructor> instructors=new();
 
         public bool AddStudent(Student student)
         {
